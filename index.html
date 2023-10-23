@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <script src="./script.js"></script>
+    <link rel="stylesheet" href="./style.css">
+    <title>Pet App</title>
+</head>
+<body onload="getClients()">
+    <h1>Pet App</h1>
+    <div id="div-clients">
+        <h3>Add Client</h3>
+        <form class="form-style-1">
+            <label for="name">Name:</label>
+            <input type="text" name="name" id="name" required>
+            <label for="document">Document:</label>
+            <input type="text" name="document" id="document" required>
+            <input type="button" value="Submit" onclick="postClient()">
+        </form>
+    </div>
+    <div id="div-client-pets"></div>
+    <div id="div-form-pet" class="hide">
+        <h3>Add New Pet</h3>
+        <form class="form-style-1">
+            <label for="petname">Name:</label>
+            <input type="text" name="petname" id="petname" required>
+            <label for="type">Type:</label>
+            <select name="type" id="type" required>
+                <option value="Dog">Dog</option>
+                <option value="Cat">Cat</option>
+                <option value="Bird">Bird</option>
+                <option value="Turtle">Turtle</option>
+                <option value="Rabitt">Rabitt</option>
+            </select>
+            <label for="breed">Breed:</label>
+            <input type="text" name="breed" id="breed" required>
+            <label for="birth">Birth:</label>
+            <input type="date" name="birth" id="birth" required>
+            <input type="button" value="Submit" id="submit-pet">
+        </form>
+    </div>
+</body>
+</html>
