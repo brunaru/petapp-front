@@ -18,27 +18,26 @@ function getClients() {
 }
 
 function addClient(client) {
-    const div = document.getElementById('div-clients')
+    const clientItem = document.createElement('p')
+    clientItem.innerText = client.name + ', ' + client.document
+
+    const viewButton = document.createElement('button')
+    viewButton.innerText = 'Open'
+    viewButton.setAttribute('onclick','getPets(' + client.id + ', "' + client.name + '")')
+
+    const trashButton = document.createElement('button')
+    trashButton.innerText = 'Delete'
+    trashButton.setAttribute('onclick','deleteClient(' + client.id + ')')
+
     const container = document.createElement('div')
     container.classList.add('client-list')
     container.id = client.id
+    container.appendChild(clientItem)
+    container.appendChild(viewButton)
+    container.appendChild(trashButton)
 
-    const c = document.createElement('p')
-    c.innerText = client.name + ', ' + client.document
-
-    const view = document.createElement('spam')
-    view.classList.add('material-symbols-outlined')
-    view.innerText = 'pageview'
-    view.setAttribute('onclick','getPets(' + client.id + ', "' + client.name + '")')
-    const trash = document.createElement('spam')
-    trash.classList.add('material-symbols-outlined')
-    trash.innerText = 'delete'
-    trash.setAttribute('onclick','deleteClient(' + client.id + ')')
-
-    container.appendChild(c)
-    container.appendChild(view)
-    container.appendChild(trash)
-    div.appendChild(container)
+    const divClients = document.getElementById('div-clients')
+    divClients.appendChild(container)
 }
 
 function postClient() {
@@ -51,6 +50,7 @@ function postClient() {
       .then(function (response) {
         console.log(response)
         addClient(response.data)
+        document.getElementsByTagName('form')[0].reset()
       })
       .catch(function (error) {
         console.log(error)
@@ -67,39 +67,35 @@ function deleteClient(id) {
 }
 
 function getPets(clientId, clientName) {
-    axios.get(api + 'clients/' + clientId + '/pets').then(function (response) {
-        const pets = response.data
+    document.getElementById('div-form-pet').classList.remove('hide')
+    document.getElementById('div-form-pet').classList.add('show')
+    document.getElementById('submit-pet').setAttribute('onclick','postPet(' + clientId + ')')
 
-        const div = document.getElementById('div-client-pets')
-        div.innerHTML = ''
-        document.getElementById('div-form-pet').classList.remove('hide')
-        document.getElementById('div-form-pet').classList.add('show')
+    const divPets = document.getElementById('div-client-pets')
+    divPets.innerHTML = ''
+
+    axios.get(api + 'clients/' + clientId + '/pets').then(function (response) {
         const h2 = document.createElement('h2')
         h2.innerText = 'Pets of ' + clientName
-        div.appendChild(h2)
-        const submit = document.getElementById('submit-pet')
-        submit.setAttribute('onclick','postPet(' + clientId + ')')
+        divPets.appendChild(h2)
 
+        const pets = response.data
         for (let pet of pets) {
-            addPet(pet, div)
+            addPet(pet)
         }
-        console.log(pets)
     }).catch(function (error) {
         console.error(error)
     })
 }
 
 function addPet(pet) {
-    const div = document.getElementById('div-client-pets')
+    const p = document.createElement('p')
+    p.innerText = pet.name + ', ' + pet.type + ', ' + pet.breed + ', ' + pet.birth
     const container = document.createElement('div')
     container.classList.add('pets-list')
     container.id = pet.id
-
-    const p = document.createElement('p')
-    p.innerText = pet.name + ', ' + pet.type + ', ' + pet.breed + ', ' + pet.birth
-
     container.appendChild(p)
-    div.appendChild(container)
+    document.getElementById('div-client-pets').appendChild(container)
 }
 
 function postPet(clientId) {
@@ -118,6 +114,7 @@ function postPet(clientId) {
       .then(function (response) {
         console.log(response)
         addPet(response.data)
+        document.getElementsByTagName('form')[1].reset()
       })
       .catch(function (error) {
         console.log(error)
